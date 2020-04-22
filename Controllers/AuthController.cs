@@ -31,7 +31,7 @@ namespace DatingAPI.Controllers
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
             if (await _repo.UserExists(userForRegisterDto.Username))
-                return BadRequest("Username already exists");
+                return BadRequest("Username already exists!");
 
             var userToCreate = new User {Username = userForRegisterDto.Username};
 
@@ -44,9 +44,9 @@ namespace DatingAPI.Controllers
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
-
+            
             if (userFromRepo == null)
-                return Unauthorized();
+                return BadRequest("Wrong username or password!");
 
             var claims = new[]
             {
@@ -69,7 +69,11 @@ namespace DatingAPI.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new { token = tokenHandler.WriteToken(token) });
+            return Ok(new
+            {
+                name = userFromRepo.Username,
+                token = tokenHandler.WriteToken(token)
+            });
         }
     }
 }
