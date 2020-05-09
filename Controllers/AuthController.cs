@@ -72,6 +72,7 @@ namespace DatingAPI.Controllers
             return Ok(new
             {
                 name = userFromRepo.Username,
+                id = userFromRepo.Id,
                 token = tokenHandler.WriteToken(token)
             });
         }
