@@ -51,18 +51,20 @@ namespace DatingAPI.Controllers
                 return Unauthorized();
 
             var userFromRepo = await _repo.GetUser(id);
-
             _mapper.Map(userForUpdateDto, userFromRepo);
 
-            if (!await _repo.SaveAll())
+            try
             {
-                throw new Exception($"Updating user with id: {id} failed on save!");
+                await _repo.SaveAll();
+                
+                var user = await _repo.GetUser(id);
+                var userToReturn = _mapper.Map<UserForDetailedDto>(user);
+                return Ok(userToReturn);
             }
-            
-            var user = await _repo.GetUser(id);
-            var userToReturn = _mapper.Map<UserForDetailedDto>(user);
-            
-            return Ok(userToReturn);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
         }
     }
