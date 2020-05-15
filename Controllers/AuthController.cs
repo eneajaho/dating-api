@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingAPI.Data;
 using DatingAPI.DTOs;
 using DatingAPI.Models;
@@ -17,11 +18,13 @@ namespace DatingAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _repo;
+        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthRepository repo, IConfiguration configuration)
+        public AuthController(IAuthRepository repo, IMapper mapper, IConfiguration configuration)
         {
             _repo = repo;
+            _mapper = mapper;
             _configuration = configuration;
         }
 
@@ -33,18 +36,26 @@ namespace DatingAPI.Controllers
             if (await _repo.UserExists(userForRegisterDto.Username))
                 return BadRequest("Username already exists!");
 
-            var userToCreate = new User {Username = userForRegisterDto.Username};
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
-            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+            await _repo.Register(userToCreate, userForRegisterDto.Password);
 
-            return StatusCode(201);
+            return NoContent();
+
+            // var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            // return CreatedAtRoute(
+            //     "GetUser",
+            //     new {controller = "Users", id = createdUser.Id},
+            //     userToReturn
+            // );
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
-            
+
             if (userFromRepo == null)
                 return BadRequest("Wrong username or password!");
 
@@ -53,10 +64,10 @@ namespace DatingAPI.Controllers
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
                 new Claim(ClaimTypes.Name, userFromRepo.Username)
             };
-            
+
             var key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-            
+
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor()
