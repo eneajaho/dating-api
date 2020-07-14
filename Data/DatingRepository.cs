@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudinaryDotNet.Actions;
+using DatingAPI.Helpers;
 using DatingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,21 +27,24 @@ namespace DatingAPI.Data
             _context.Remove(entity);
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = await _context.Users.Include(p => p.Photos).ToListAsync();
-            return users;
+            var users = _context.Users
+                .Include(p => p.Photos);
+            return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
-            return user;
+            return await _context.Users
+                .Include(p => p.Photos)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<Photo> GetPhoto(int id)
         {
-            return await _context.Photos.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Photos
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Photo> GetMainPhotoForUser(int userId)
