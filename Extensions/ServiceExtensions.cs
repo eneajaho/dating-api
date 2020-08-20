@@ -1,6 +1,7 @@
 using System.Text;
 using DatingAPI.Contracts;
 using DatingAPI.Entities;
+using DatingAPI.Helpers;
 using DatingAPI.Logger;
 using DatingAPI.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +27,7 @@ namespace DatingAPI.Extensions
         public static void ConfigureLoggerService(this IServiceCollection services)
         {
             services.AddScoped<ILoggerManager, LoggerManager>();
+            services.AddScoped<LogUserActivity>();
         }
 
         public static void ConfigureDatabaseConnection(this IServiceCollection services, IConfiguration configuration)
@@ -51,10 +53,10 @@ namespace DatingAPI.Extensions
                     };
                 });
         }
-        
-        public static void ConfigureRepositoryWrapper(this IServiceCollection services) 
-        { 
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>(); 
+
+        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
     }
 }

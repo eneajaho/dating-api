@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace DatingAPI.Data
 {
-    public class Seed
+    public static class Seed
     {
         public static void SeedUsers(RepositoryContext context)
         {
@@ -19,8 +19,7 @@ namespace DatingAPI.Data
             var users = JsonConvert.DeserializeObject<List<User>>(userData);
             foreach (var user in users)
             {
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash("password", out passwordHash, out passwordSalt);
+                CreatePasswordHash("password", out var passwordHash, out var passwordSalt);
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;

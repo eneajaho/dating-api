@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,13 +18,11 @@ namespace DatingAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IDatingRepository _repoDating;
         private readonly IRepositoryWrapper _repo;
 
-        public UsersController(IRepositoryWrapper repo, IDatingRepository repoDating, IMapper mapper)
+        public UsersController(IRepositoryWrapper repo, IMapper mapper)
         {
             _repo = repo;
-            _repoDating = repoDating;
             _mapper = mapper;
         }
 
@@ -59,9 +56,9 @@ namespace DatingAPI.Controllers
 
             var userFromRepo = await _repo.User.GetUserById(id);
             _mapper.Map(userForUpdateDto, userFromRepo);
-            
-            _repo.User.Update(userFromRepo);
-            _repo.SaveChanges();
+
+            // _repo.User.Update(userFromRepo);
+            await _repo.SaveAsync();
 
             var userToReturn = _mapper.Map<UserForDetailedDto>(userFromRepo);
             return Ok(userToReturn);

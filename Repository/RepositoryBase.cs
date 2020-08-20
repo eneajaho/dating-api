@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -9,41 +10,61 @@ namespace DatingAPI.Repository
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        public BaseRepository(DbContext repositoryContext)
+        private DbSet<T> Entity { get; }
+
+        protected BaseRepository(DbContext repoContext)
         {
-            Context = repositoryContext.Set<T>();
+            Entity = repoContext.Set<T>();
         }
 
-        private DbSet<T> Context { get; }
-
-        public IQueryable<T> Entity()
+        public IQueryable<T> GetAll()
         {
-            return Context.AsNoTracking();
+            return Entity;
         }
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        public Task<List<T>> GetAllAsync()
         {
-            return Context.Where(expression).AsNoTracking();
+            return Entity.ToListAsync();
         }
 
-        public async Task<bool> Exists(Expression<Func<T, bool>> expression)
+        public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
-            return await Context.AnyAsync(expression);
+            return Entity.FirstOrDefaultAsync(predicate);
+        }
+
+        public IQueryable<T> GetWhere(Expression<Func<T, bool>> expression)
+        {
+            return Entity.Where(expression);
+        }
+
+        public Task<int> CountAll()
+        {
+            return Entity.CountAsync();
+        }
+
+        public Task<int> CountWhere(Expression<Func<T, bool>> predicate)
+        {
+            return Entity.CountAsync(predicate);
+        }
+
+        public Task<bool> Exists(Expression<Func<T, bool>> expression)
+        {
+            return Entity.AnyAsync(expression);
         }
 
         public void Create(T entity)
         {
-            Context.Add(entity);
+            Entity.Add(entity);
         }
 
         public void Update(T entity)
         {
-            Context.Update(entity);
+            Entity.Update(entity);
         }
 
         public void Delete(T entity)
         {
-            Context.Remove(entity);
+            Entity.Remove(entity);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace DatingAPI.Logger
             Type = LogType.Info;
             IpAddress = "";
         }
+
         public Log(string message, LogType type, string ip = "")
         {
             Message = message;

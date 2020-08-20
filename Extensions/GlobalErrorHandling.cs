@@ -19,14 +19,12 @@ namespace DatingAPI.Extensions
 
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
-                    {
                         // TODO: Add error to errorLog file
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
                             StatusCode = context.Response.StatusCode,
                             Message = $"Internal Server Error. Details: {contextFeature.Error.Message}"
                         }.ToString());
-                    }
                 });
             });
         }

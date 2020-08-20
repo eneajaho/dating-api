@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DatingAPI.Contracts;
 using DatingAPI.Entities;
 using DatingAPI.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DatingAPI.Repository
 {
@@ -27,7 +26,7 @@ namespace DatingAPI.Repository
 
         public async Task<User> Login(string username, string password)
         {
-            var user = await Entity().FirstOrDefaultAsync(x => x.Username == username);
+            var user = await FirstOrDefaultAsync(x => x.Username == username);
 
             if (user == null)
                 return null;

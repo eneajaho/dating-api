@@ -1,6 +1,4 @@
 using AutoMapper;
-using DatingAPI.Contracts;
-using DatingAPI.Data;
 using DatingAPI.Extensions;
 using DatingAPI.Helpers;
 using Microsoft.AspNetCore.Builder;
@@ -39,15 +37,11 @@ namespace DatingAPI
 
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
 
-            services.AddAutoMapper(typeof(DatingRepository).Assembly);
+            services.AddAutoMapper(typeof(Startup).Assembly);
 
             services.ConfigureAuthentication(Configuration);
 
-            services.AddScoped<IDatingRepository, DatingRepository>();
-            services.AddScoped<LogUserActivity>();
-            
             services.ConfigureRepositoryWrapper();
-
         }
 
         // This method gets called by the runtime.

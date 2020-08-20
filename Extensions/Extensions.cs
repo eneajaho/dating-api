@@ -43,7 +43,7 @@ namespace DatingAPI.Extensions
         public static string GetUserIpAddress(this HttpContext context)
         {
             // https://stackoverflow.com/a/61479085/7220620
-            
+
             var ipAddress = context.Connection.RemoteIpAddress;
 
             if (ipAddress == null)

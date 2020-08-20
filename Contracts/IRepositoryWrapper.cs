@@ -6,6 +6,7 @@ namespace DatingAPI.Contracts
     {
         IAuthRepository Auth { get; }
         IUserRepository User { get; }
-        void SaveChanges();
+        IPhotoRepository Photo { get; }
+        Task<bool> SaveAsync();
     }
 }
