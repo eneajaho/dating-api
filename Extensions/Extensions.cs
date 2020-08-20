@@ -1,9 +1,13 @@
 using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using DatingAPI.Helpers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace DatingAPI.Helpers
+namespace DatingAPI.Extensions
 {
     public static class Extensions
     {
@@ -18,7 +22,7 @@ namespace DatingAPI.Helpers
             int totalPages)
         {
             var paginationHeader = new PaginationHeader(currentPage, itemsPerPage, totalItems, totalPages);
-            var camelCaseFormatter = new JsonSerializerSettings    
+            var camelCaseFormatter = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
@@ -34,6 +38,24 @@ namespace DatingAPI.Helpers
                 age--;
 
             return age;
+        }
+
+        public static string GetUserIpAddress(this HttpContext context)
+        {
+            // https://stackoverflow.com/a/61479085/7220620
+            
+            var ipAddress = context.Connection.RemoteIpAddress;
+
+            if (ipAddress == null)
+                return "";
+
+            // If we got an IPV6 address, then we need to ask the network for the IPV4 address 
+            // This usually only happens when the browser is on the same machine as the server.
+            if (ipAddress.AddressFamily == AddressFamily.InterNetworkV6)
+                ipAddress = Dns.GetHostEntry(ipAddress).AddressList
+                    .First(x => x.AddressFamily == AddressFamily.InterNetwork);
+
+            return ipAddress.ToString();
         }
     }
 }

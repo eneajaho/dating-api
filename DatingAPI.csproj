@@ -35,5 +35,9 @@
     <Content Remove="obj\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="nlog.config" />
+  </ItemGroup>
+
 
 </Project>

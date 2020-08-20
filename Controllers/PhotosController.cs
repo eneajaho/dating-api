@@ -1,12 +1,12 @@
-using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using DatingAPI.Contracts;
 using DatingAPI.Data;
-using DatingAPI.DTOs;
+using DatingAPI.Entities.DTOs;
 using DatingAPI.Helpers;
 using DatingAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,10 +20,10 @@ namespace DatingAPI.Controllers
     [ApiController]
     public class PhotosController : ControllerBase
     {
-        private readonly IDatingRepository _repo;
-        private readonly IMapper _mapper;
-        private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
         private readonly Cloudinary _cloudinary;
+        private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
+        private readonly IMapper _mapper;
+        private readonly IDatingRepository _repo;
 
         public PhotosController(IDatingRepository repo, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig)
         {
@@ -31,7 +31,7 @@ namespace DatingAPI.Controllers
             _mapper = mapper;
             _cloudinaryConfig = cloudinaryConfig;
 
-            Account acc = new Account(
+            var acc = new Account(
                 _cloudinaryConfig.Value.Name,
                 _cloudinaryConfig.Value.ApiKey,
                 _cloudinaryConfig.Value.ApiSecret
@@ -62,7 +62,7 @@ namespace DatingAPI.Controllers
             if (file.Length > 0)
             {
                 await using var stream = file.OpenReadStream();
-                var uploadParams = new ImageUploadParams()
+                var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.Name, stream),
                     Transformation = new Transformation()
@@ -85,7 +85,7 @@ namespace DatingAPI.Controllers
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
                 return CreatedAtRoute("GetPhoto",
-                    new {userId = userId, id = photo.Id}, photoToReturn);
+                    new {userId, id = photo.Id}, photoToReturn);
             }
 
             return BadRequest("Couldn't add the photo!");

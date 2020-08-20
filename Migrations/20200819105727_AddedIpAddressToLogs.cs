@@ -2,21 +2,21 @@
 
 namespace DatingAPI.Migrations
 {
-    public partial class AddedPublicIdPhotos : Migration
+    public partial class AddedIpAddressToLogs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                "PublicId",
-                "Photos",
+                "IpAddress",
+                "Logs",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                "PublicId",
-                "Photos");
+                "IpAddress",
+                "Logs");
         }
     }
 }

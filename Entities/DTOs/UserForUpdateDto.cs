@@ -1,6 +1,4 @@
-using System;
-
-namespace DatingAPI.DTOs
+namespace DatingAPI.Entities.DTOs
 {
     public class UserForUpdateDto
     {

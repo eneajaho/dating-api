@@ -1,10 +1,11 @@
 using System;
+using DatingAPI.Contracts;
 using DatingAPI.Data;
+using DatingAPI.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace DatingAPI
 {
@@ -19,22 +20,26 @@ namespace DatingAPI
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<DataContext>();
+                    var context = services.GetRequiredService<RepositoryContext>();
                     context.Database.Migrate();
                     Seed.SeedUsers(context);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    var logger = services.GetRequiredService<ILogger>();
-                    logger.LogError(e, "An error occured during migration");
+                    var logger = services.GetRequiredService<ILoggerManager>();
+                    logger.LogError("An error occured during migration");
                 }
             }
 
             host.Run();
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+        }
     }
 }

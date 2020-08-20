@@ -8,122 +8,122 @@ namespace DatingAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<DateTime>(
-                name: "Birthday",
-                table: "Users",
+                "Birthday",
+                "Users",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<string>(
-                name: "City",
-                table: "Users",
+                "City",
+                "Users",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Country",
-                table: "Users",
+                "Country",
+                "Users",
                 nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "CreatedAt",
-                table: "Users",
+                "CreatedAt",
+                "Users",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<string>(
-                name: "Gender",
-                table: "Users",
+                "Gender",
+                "Users",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Interests",
-                table: "Users",
+                "Interests",
+                "Users",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Introduction",
-                table: "Users",
+                "Introduction",
+                "Users",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "KnownAs",
-                table: "Users",
+                "KnownAs",
+                "Users",
                 nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "LastActive",
-                table: "Users",
+                "LastActive",
+                "Users",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.CreateTable(
-                name: "Photos",
-                columns: table => new
+                "Photos",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Sqlite:Autoincrement", true),
                     Url = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    AddedAt = table.Column<DateTime>(nullable: false),
-                    IsMain = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    AddedAt = table.Column<DateTime>(),
+                    IsMain = table.Column<bool>(),
+                    UserId = table.Column<int>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        "FK_Photos_Users_UserId",
+                        x => x.UserId,
+                        "Users",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_UserId",
-                table: "Photos",
-                column: "UserId");
+                "IX_Photos_UserId",
+                "Photos",
+                "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Photos");
+                "Photos");
 
             migrationBuilder.DropColumn(
-                name: "Birthday",
-                table: "Users");
+                "Birthday",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "City",
-                table: "Users");
+                "City",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "Country",
-                table: "Users");
+                "Country",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "CreatedAt",
-                table: "Users");
+                "CreatedAt",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "Gender",
-                table: "Users");
+                "Gender",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "Interests",
-                table: "Users");
+                "Interests",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "Introduction",
-                table: "Users");
+                "Introduction",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "KnownAs",
-                table: "Users");
+                "KnownAs",
+                "Users");
 
             migrationBuilder.DropColumn(
-                name: "LastActive",
-                table: "Users");
+                "LastActive",
+                "Users");
         }
     }
 }

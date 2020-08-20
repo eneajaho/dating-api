@@ -1,37 +1,33 @@
-﻿using System;
-using System.Linq;
-using System.Security.AccessControl;
+﻿using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using DatingAPI.Contracts;
+using DatingAPI.Entities;
 using DatingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DatingAPI.Data
+namespace DatingAPI.Repository
 {
-    public class AuthRepository : IAuthRepository
+    public class AuthRepository : BaseRepository<User>, IAuthRepository
     {
-        private readonly DataContext _context;
-
-        public AuthRepository(DataContext context)
+        public AuthRepository(RepositoryContext repoContext) : base(repoContext)
         {
-            _context = context;
         }
 
-        public async Task<User> Register(User user, string password)
+        public void Register(User user, string password)
         {
             CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-            return user;
+            Create(user);
         }
 
         public async Task<User> Login(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+            var user = await Entity().FirstOrDefaultAsync(x => x.Username == username);
 
             if (user == null)
                 return null;
@@ -44,20 +40,20 @@ namespace DatingAPI.Data
 
         public async Task<bool> UserExists(string username)
         {
-            return await _context.Users.AnyAsync(x => x.Username == username);
+            return await Exists(x => x.Username == username);
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new HMACSHA512();
             passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using var hmac = new HMACSHA512(passwordSalt);
-            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
             return !computedHash.Where((t, i) => t != passwordHash[i]).Any();
         }

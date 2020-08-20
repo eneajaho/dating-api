@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace DatingAPI.Models
 {
@@ -21,6 +20,4 @@ namespace DatingAPI.Models
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
     }
-
-
 }

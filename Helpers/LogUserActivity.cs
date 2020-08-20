@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DatingAPI.Contracts;
 using DatingAPI.Data;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,7 @@ namespace DatingAPI.Helpers
             var repo = resultContext.HttpContext.RequestServices.GetService<IDatingRepository>();
 
             var user = await repo.GetUser(userId);
-            
+
             user.LastActive = DateTime.Now;
 
             await repo.SaveAll();

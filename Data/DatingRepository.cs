@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CloudinaryDotNet.Actions;
+using DatingAPI.Contracts;
+using DatingAPI.Entities;
 using DatingAPI.Helpers;
 using DatingAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +10,9 @@ namespace DatingAPI.Data
 {
     public class DatingRepository : IDatingRepository
     {
-        private readonly DataContext _context;
+        private readonly RepositoryContext _context;
 
-        public DatingRepository(DataContext context)
+        public DatingRepository(RepositoryContext context)
         {
             _context = context;
         }
@@ -29,8 +29,7 @@ namespace DatingAPI.Data
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = _context.Users
-                .Include(p => p.Photos);
+            var users = _context.Users.Include(p => p.Photos);
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
@@ -49,8 +48,7 @@ namespace DatingAPI.Data
 
         public async Task<Photo> GetMainPhotoForUser(int userId)
         {
-            return await _context.Photos
-                .Where(u => u.UserId == userId)
+            return await _context.Photos.Where(u => u.UserId == userId)
                 .FirstOrDefaultAsync(p => p.IsMain);
         }
 

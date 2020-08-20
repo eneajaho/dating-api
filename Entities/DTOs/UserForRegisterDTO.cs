@@ -1,13 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DatingAPI.DTOs
+namespace DatingAPI.Entities.DTOs
 {
     public class UserForRegisterDto
     {
+        public UserForRegisterDto()
+        {
+            CreatedAt = DateTime.Now;
+            LastActive = DateTime.Now;
+        }
+
         [Required] public string Username { get; set; }
 
-        [Required]    
+        [Required]
         [StringLength(8, MinimumLength = 4, ErrorMessage = "You must specify password between 4 and 8 characters")]
         public string Password { get; set; }
 
@@ -19,11 +25,5 @@ namespace DatingAPI.DTOs
 
         public DateTime CreatedAt { get; set; }
         public DateTime LastActive { get; set; }
-
-        public UserForRegisterDto()
-        {
-            CreatedAt = DateTime.Now;
-            LastActive = DateTime.Now;
-        }
     }
 }
