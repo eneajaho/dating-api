@@ -65,7 +65,7 @@ namespace DatingAPI.Controllers
 
             var userFromRepo = await _repo.Auth.Login(username, userForLoginDto.Password);
 
-            if (!await _repo.Auth.UserExists(username))
+            if (!(await _repo.Auth.UserExists(username)))
             {
                 _logger.LogWarn($"There was an attempt to login with a non-existing username: '{username}' .",
                     userIpAddress);

@@ -26,7 +26,6 @@ namespace DatingAPI.Controllers
 
         public PhotosController(
             IRepositoryWrapper repo,
-            IDatingRepository repoD,
             IMapper mapper,
             IOptions<CloudinarySettings> cloudinaryConfig
         )
