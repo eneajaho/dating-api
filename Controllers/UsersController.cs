@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingAPI.Contracts;
 using DatingAPI.Entities.DTOs;
+using DatingAPI.Entities.QueryParameters;
 using DatingAPI.Extensions;
 using DatingAPI.Helpers;
 using Microsoft.AspNetCore.Authorization;

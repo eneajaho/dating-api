@@ -1,6 +1,6 @@
 namespace DatingAPI.Helpers
 {
-    public class UserParams
+    public class QueryStringParameters
     {
         private const int MaxPageSize = 50;
         private int _pageSize = 10;

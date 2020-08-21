@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatingAPI.Contracts;
 using DatingAPI.Entities;
+using DatingAPI.Entities.QueryParameters;
 using DatingAPI.Helpers;
 using DatingAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,9 @@ namespace DatingAPI.Repository
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = GetAll().Include(p => p.Photos);
+            var users = GetAll()
+                .OrderBy(on => on.Username)
+                .Include(p => p.Photos);
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 

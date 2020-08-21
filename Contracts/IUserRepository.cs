@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DatingAPI.Entities.QueryParameters;
 using DatingAPI.Helpers;
 using DatingAPI.Models;
 
