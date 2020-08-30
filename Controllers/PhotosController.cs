@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
+/* TODO
+  - Add action filter for some controllers that check if the user has access to photo
+*/
+
 namespace DatingAPI.Controllers
 {
     [Authorize]

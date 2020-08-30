@@ -11,23 +11,32 @@ namespace DatingAPI.Repository
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(RepositoryContext repositoryContext) : base(repositoryContext)
-        {
-        }
+        public UserRepository(RepositoryContext repoContext) : base(repoContext) { }
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             var users = GetAll()
                 .OrderBy(on => on.Username)
                 .Include(p => p.Photos);
-            return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
+            
+            return await PagedList<User>.CreateAsync(
+                users, userParams.PageNumber, userParams.PageSize
+            );
         }
 
         public async Task<User> GetUserById(int id)
         {
-            var query1 = GetWhere(u => u.Id == id).Include(u => u.Photos).FirstOrDefaultAsync();
-            // var query2 = GetAll().Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
-            return await query1;
+            var query = GetWhere(u => u.Id == id)
+                .Include(u => u.Photos)
+                .FirstOrDefaultAsync(); 
+            
+            // var query2 = GetAll()
+            //     .Include(p => p.Photos)
+            //     .FirstOrDefaultAsync(u => u.Id == id);
+            
+            /* Both queries generate the same SQL query, so they have the same execution speed. */
+            
+            return await query;
         }
     }
 }

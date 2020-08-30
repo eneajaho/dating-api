@@ -4,6 +4,9 @@ using DatingAPI.Entities;
 
 namespace DatingAPI.Repository
 {
+    
+    // RepositoryWrapper is UnitOfWork, just with another name. 
+    
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private readonly RepositoryContext _repoContext;
