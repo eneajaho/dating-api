@@ -2,9 +2,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatingAPI.Contracts;
 using DatingAPI.Entities;
+using DatingAPI.Entities.Models;
 using DatingAPI.Entities.QueryParameters;
 using DatingAPI.Helpers;
-using DatingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingAPI.Repository
@@ -17,8 +17,13 @@ namespace DatingAPI.Repository
         {
             var users = GetAll()
                 .OrderBy(on => on.Username)
-                .Include(p => p.Photos);
-            
+                .Include(p => p.Photos)
+                .AsQueryable();
+
+            users = users.Where(x => x.Gender == userParams.Gender);
+
+            users = users.Where(x => x.Id != userParams.UserId);
+
             return await PagedList<User>.CreateAsync(
                 users, userParams.PageNumber, userParams.PageSize
             );

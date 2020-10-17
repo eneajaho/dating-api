@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using DatingAPI.Entities.DTOs;
+using DatingAPI.Entities.Models;
 using DatingAPI.Extensions;
 using DatingAPI.Models;
 

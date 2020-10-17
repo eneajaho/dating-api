@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using DatingAPI.Entities;
+using DatingAPI.Entities.Models;
 using DatingAPI.Models;
 using Newtonsoft.Json;
 

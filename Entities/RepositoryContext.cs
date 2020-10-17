@@ -1,4 +1,5 @@
-﻿using DatingAPI.Logger;
+﻿using DatingAPI.Entities.Models;
+using DatingAPI.Logger;
 using DatingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 

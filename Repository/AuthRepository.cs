@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DatingAPI.Contracts;
 using DatingAPI.Entities;
+using DatingAPI.Entities.Models;
 using DatingAPI.Models;
 
 namespace DatingAPI.Repository
