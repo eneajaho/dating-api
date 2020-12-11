@@ -8,7 +8,13 @@ namespace DatingAPI.Controllers
         [HttpGet]
         public IActionResult ItWorks()
         {
-            return Ok(new {DoesItWork = "Yes"});
+            return Ok(new
+            {
+                DoesItWork = "Yes",
+                AppName = "DatingYou",
+                Dev = "Enea",
+                Hotel = "Trivago"
+            });
         }
     }
 }

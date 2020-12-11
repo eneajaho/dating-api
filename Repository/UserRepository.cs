@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingAPI.Contracts;
@@ -22,7 +23,16 @@ namespace DatingAPI.Repository
 
             users = users.Where(x => x.Gender == userParams.Gender);
 
-            users = users.Where(x => x.Id != userParams.UserId);
+            // users = users.Where(x => x.Id != userParams.UserId);
+
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
+            { 
+                // Dob = date of birth
+                var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+                var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+                users = users.Where(x => x.Birthday >= minDob && x.Birthday <= maxDob);
+            }
 
             return await PagedList<User>.CreateAsync(
                 users, userParams.PageNumber, userParams.PageSize

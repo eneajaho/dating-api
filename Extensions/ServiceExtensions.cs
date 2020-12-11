@@ -3,6 +3,7 @@ using DatingAPI.Contracts;
 using DatingAPI.Entities;
 using DatingAPI.Helpers;
 using DatingAPI.Logger;
+using DatingAPI.Models;
 using DatingAPI.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -58,5 +59,6 @@ namespace DatingAPI.Extensions
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
+        
     }
 }

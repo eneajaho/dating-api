@@ -8,6 +8,7 @@ using DatingAPI.Contracts;
 using DatingAPI.Entities.DTOs;
 using DatingAPI.Helpers;
 using DatingAPI.Models;
+using DatingAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
