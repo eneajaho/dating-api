@@ -23,7 +23,8 @@ namespace DatingAPI.Repository
 
             users = users.Where(x => x.Gender == userParams.Gender);
 
-            // users = users.Where(x => x.Id != userParams.UserId);
+            // make sure query doesn't return authenticated user
+            users = users.Where(x => x.Id != userParams.UserId);
 
             if (userParams.MinAge != 18 || userParams.MaxAge != 99)
             { 
