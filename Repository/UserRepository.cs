@@ -17,8 +17,8 @@ namespace DatingAPI.Repository
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             var users = GetAll()
-                .OrderBy(on => on.Username)
-                .Include(p => p.Photos)
+                .OrderByDescending(u => u.LastActive)
+                .Include(u => u.Photos)
                 .AsQueryable();
 
             users = users.Where(x => x.Gender == userParams.Gender);
@@ -33,6 +33,28 @@ namespace DatingAPI.Repository
                 var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
 
                 users = users.Where(x => x.Birthday >= minDob && x.Birthday <= maxDob);
+            }
+
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                users = userParams.OrderBy switch
+                {
+                    "created" => users.OrderByDescending(u => u.CreatedAt),
+                    _ => users.OrderByDescending(u => u.LastActive)
+                };
+            }
+            
+            if (!string.IsNullOrEmpty(userParams.LastActive))
+            {
+                users = userParams.LastActive switch
+                {
+                    // last active needs to be later than today minus number of days/months/years
+                    "day" => users.Where(x => x.LastActive.CompareTo(DateTime.Today.AddDays(-1)) >= 0),
+                    "week" => users.Where(x => x.LastActive.CompareTo(DateTime.Today.AddDays(-7)) >= 0),
+                    "month" => users.Where(x => x.LastActive.CompareTo(DateTime.Today.AddMonths(-1)) >= 0),
+                    "year" => users.Where(x => x.LastActive.CompareTo(DateTime.Today.AddYears(-1)) >= 0),
+                    _ => users
+                };
             }
 
             return await PagedList<User>.CreateAsync(
