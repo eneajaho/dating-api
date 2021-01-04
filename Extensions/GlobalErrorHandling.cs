@@ -1,5 +1,4 @@
 using System.Net;
-using DatingAPI.Entities.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -20,11 +19,8 @@ namespace DatingAPI.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                         // TODO: Add error to errorLog file
-                        await context.Response.WriteAsync(new ErrorDetails()
-                        {
-                            StatusCode = context.Response.StatusCode,
-                            Message = $"Internal Server Error. Details: {contextFeature.Error.Message}"
-                        }.ToString());
+                        // will throw error the message of the exception
+                        await context.Response.WriteAsync(contextFeature.Error.Message);
                 });
             });
         }
