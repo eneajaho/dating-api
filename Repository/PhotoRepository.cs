@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using DatingAPI.Contracts;
-using DatingAPI.Models;
+using DatingAPI.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingAPI.Repository

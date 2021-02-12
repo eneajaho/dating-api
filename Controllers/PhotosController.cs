@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,9 +8,10 @@ using CloudinaryDotNet.Actions;
 using DatingAPI.Contracts;
 using DatingAPI.Entities.DTOs;
 using DatingAPI.Helpers;
-using DatingAPI.Models;
+using DatingAPI.Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 /* TODO
@@ -46,6 +48,18 @@ namespace DatingAPI.Controllers
 
             _cloudinary = new Cloudinary(acc);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetUserPhotos(int userId)
+        {
+            var userPhotos = await _repo.Photo
+                .GetWhere(p => p.UserId == userId)
+                .ToListAsync();
+
+            var photos = _mapper.Map<IEnumerable<PhotoForReturnDto>>(userPhotos);
+
+            return Ok(photos);
+        }
 
         [HttpGet("{id}", Name = "GetPhoto")]
         public async Task<IActionResult> GetPhoto(int id)
@@ -80,7 +94,7 @@ namespace DatingAPI.Controllers
                 uploadResult = _cloudinary.Upload(uploadParams);
             }
 
-            photoForCreationDto.Url = uploadResult.Uri.ToString();
+            photoForCreationDto.Url = uploadResult.Url.ToString();
             photoForCreationDto.PublicId = uploadResult.PublicId;
 
             var photo = _mapper.Map<Photo>(photoForCreationDto);

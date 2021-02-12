@@ -5,7 +5,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>DatingAPI</ActiveDebugProfile>
-    <ShowAllFiles>true</ShowAllFiles>
+    <ShowAllFiles>false</ShowAllFiles>
     <NameOfLastUsedPublishProfile>ToBePublished</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

@@ -1,7 +1,7 @@
 using System;
 using DatingAPI.Entities.Models;
 
-namespace DatingAPI.Models
+namespace DatingAPI.Entities.Models
 {
     public class Photo
     {

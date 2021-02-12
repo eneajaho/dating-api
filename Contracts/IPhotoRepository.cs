@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using DatingAPI.Models;
+using DatingAPI.Entities.Models;
 
 namespace DatingAPI.Contracts
 {
